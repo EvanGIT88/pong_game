@@ -49,8 +49,8 @@ bool setup(int *player_coord_addr, int *canvas_size_addr, int *virtual_coord_add
 }
 
 void render(int *canvas_size_addr, char *matrix_arr_addr, int *virtual_coord_addr, int *player_coord_addr) {
-  //int limit = canvas_size_addr[0] * canvas_size_addr[1];
-  printf("%d", canvas_size_addr[0]);
+  int limit = canvas_size_addr[0] * canvas_size_addr[1];
+  printf("%d", limit);
   for (int i = 0; i < canvas_size_addr[0] * canvas_size_addr[1]; i++) {
     *(matrix_arr_addr + i) = '|';
     printf("%d\n", i);
@@ -82,18 +82,65 @@ void render(int *canvas_size_addr, char *matrix_arr_addr, int *virtual_coord_add
 }
 
 int main () {
-  int* player_coord;   //(x, y)
-  int* canvas_size;   //(w, h)
-  int* virtual_coord; //(x, y)
+  int* player_coord = create_arr_int(2);   //(x, y)
+  int* player_pad = create_arr_int(3); //(w, h, counter)
+  int* canvas_size = create_arr_int(2);   //(w, h)
+  int* virtual_coord = create_arr_int(2); //(x, y)
   char* matrix_arr;
 
-  if(!setup(player_coord, canvas_size, virtual_coord, matrix_arr)) {
-    printf("Alloc failed!");
-    getchar();
-    return 1;
+  if (player_coord == NULL || canvas_size == NULL || virtual_coord == NULL) {
+    return false;
   }
 
-  render(canvas_size, matrix_arr, virtual_coord, player_coord);
+  player_coord[0] = 2;
+  player_coord[1] = 1;
+
+  player_pad[0] = 2;
+  player_pad[1] = 5;
+  player_pad[2] = 0;
+
+  player_pad[0] = 0;
+  player_pad[1] = 0;
+
+  canvas_size[0] = 64;
+  canvas_size[1] = 16;
+
+  virtual_coord[0] = 0;
+  virtual_coord[1] = 0;
+  
+  matrix_arr = malloc(canvas_size[0] * canvas_size[1] * sizeof(char));
+
+  if (matrix_arr == NULL) {
+    return false;
+  }
+
+  printf("w: %d, h: %d \n", canvas_size[0], canvas_size[1]);
+  printf("vx: %d, vy: %d \n", virtual_coord[0], virtual_coord[1]);
+  printf("px: %d, py: %d \n", player_coord[0], player_coord[1]);
+
+  for (int i = 0; i < canvas_size[0] * canvas_size[1]; i++) {
+      matrix_arr[i] = '@';
+
+      if (i >= canvas_size[0] * virtual_coord[1]) {
+        virtual_coord[1]++;
+        virtual_coord[0] = 0;
+        printf("\n");
+      }
+
+      if (virtual_coord[0] == player_coord[0] && virtual_coord[1] - 1  == player_coord[1]) {
+          matrix_arr[i] = ' ';
+          player_pad[2]++;
+      }
+
+      if ( player_pad[2]) {
+
+      }
+
+      virtual_coord[0]++;
+
+      printf("%c", matrix_arr[i]);
+  }
+
   getchar();
 
   return 0;
