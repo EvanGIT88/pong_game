@@ -83,7 +83,7 @@ void render(int *canvas_size_addr, char *matrix_arr_addr, int *virtual_coord_add
 
 int main () {
   int* player_coord = create_arr_int(2);   //(x, y)
-  int* player_pad = create_arr_int(3); //(w, h, counter)
+  int* player_pad = create_arr_int(4); //(w, h, counter_w, counter_h)
   int* canvas_size = create_arr_int(2);   //(w, h)
   int* virtual_coord = create_arr_int(2); //(x, y)
   char* matrix_arr;
@@ -98,9 +98,7 @@ int main () {
   player_pad[0] = 2;
   player_pad[1] = 5;
   player_pad[2] = 0;
-
-  player_pad[0] = 0;
-  player_pad[1] = 0;
+  player_pad[3] = 0;
 
   canvas_size[0] = 64;
   canvas_size[1] = 16;
@@ -119,21 +117,24 @@ int main () {
   printf("px: %d, py: %d \n", player_coord[0], player_coord[1]);
 
   for (int i = 0; i < canvas_size[0] * canvas_size[1]; i++) {
+
       matrix_arr[i] = '@';
 
       if (i >= canvas_size[0] * virtual_coord[1]) {
         virtual_coord[1]++;
         virtual_coord[0] = 0;
+        player_pad[2] = 0;
         printf("\n");
       }
 
       if (virtual_coord[0] == player_coord[0] && virtual_coord[1] - 1  == player_coord[1]) {
           matrix_arr[i] = ' ';
           player_pad[2]++;
-      }
 
-      if ( player_pad[2]) {
-
+          if (player_pad[0] >= player_pad[2]) {
+            player_coord[0]++;
+           // printf("%d \n", player_coord[0]);
+          }
       }
 
       virtual_coord[0]++;
