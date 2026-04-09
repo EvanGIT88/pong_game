@@ -95,7 +95,7 @@ int main () {
   player_coord[0] = 2;
   player_coord[1] = 1;
 
-  player_pad[0] = 1;
+  player_pad[0] = 3;
   player_pad[1] = 5;
   player_pad[2] = 0;
   player_pad[3] = 0;
@@ -124,7 +124,7 @@ int main () {
         virtual_coord[1]++;
         virtual_coord[0] = 0;
         player_pad[2] = 0;
-       printf("\n");
+       //printf("\n");
       }
 
       if (virtual_coord[0] == player_coord[0] && virtual_coord[1] - 1  == player_coord[1]) {
@@ -136,7 +136,7 @@ int main () {
           } else if(player_pad[1] - 1 > player_pad[3]) {
             player_pad[3]++;
             player_coord[1]++;
-            player_coord[0] = 2;
+            printf("%d %d \n", player_coord[0], player_pad[2] * player_pad[3] - player_pad[3]);
           }
       }
 
@@ -144,7 +144,7 @@ int main () {
 
       virtual_coord[0]++;
 
-      printf("%c", matrix_arr[i]);
+     // printf("%c", matrix_arr[i]);
   }
 
   getchar();
