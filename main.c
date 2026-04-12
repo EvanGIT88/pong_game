@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <time.h>
 
   /*
     Display mechanism:
@@ -14,11 +15,26 @@ int* create_arr_int(int n)
     return arr;
 }
 
+void delay(int number_of_seconds)
+{
+	// Converting time into milli_seconds
+	int milli_seconds = 1000 * number_of_seconds;
+
+	// Storing start time
+	clock_t start_time = clock();
+
+	// looping till required time is not achieved
+	while (clock() < start_time + milli_seconds)
+		;
+}
+
 int main () {
   int* player_coord = create_arr_int(4);   //(x, y)
   int* player_pad = create_arr_int(4); //(w, h, counter_w, counter_h)
   int* canvas_size = create_arr_int(2);   //(w, h)
   int* virtual_coord = create_arr_int(2); //(x, y)
+  clock_t input_clock = clock();
+  int* input_key = create_arr_int(2); //(key, timeout)
   char* matrix_arr;
 
   if (player_coord == NULL || canvas_size == NULL || virtual_coord == NULL) {
@@ -27,10 +43,10 @@ int main () {
 
   player_coord[0] = 2;
   player_coord[1] = 1;
-    player_coord[2] = player_coord[0];
+  player_coord[2] = player_coord[0];
   player_coord[3] = player_coord[1];
 
-  player_pad[0] = 30;
+  player_pad[0] = 2;
   player_pad[1] = 5;
   player_pad[2] = 0;
   player_pad[3] = 0;
@@ -40,6 +56,9 @@ int main () {
 
   virtual_coord[0] = 0;
   virtual_coord[1] = 0;
+
+  input_key[0] = 4;
+  input_key[1] = 0.2;
   
   matrix_arr = malloc(canvas_size[0] * canvas_size[1] * sizeof(char));
 
@@ -51,15 +70,15 @@ int main () {
   printf("vx: %d, vy: %d \n", virtual_coord[0], virtual_coord[1]);
   printf("px: %d, py: %d \n", player_coord[0], player_coord[1]);
 
-  for (int i = 0; i < canvas_size[0] * canvas_size[1]; i++) {
-
+  for (;;) {
+    for (int i = 0; i < canvas_size[0] * canvas_size[1]; i++) {
       matrix_arr[i] = '@';
 
       if (i >= canvas_size[0] * virtual_coord[1]) {
         virtual_coord[1]++;
         virtual_coord[0] = 0;
         player_pad[2] = 0;
-       printf("\n");
+        printf("\n");
       }
 
       if (virtual_coord[0] == player_coord[2] && virtual_coord[1] - 1  == player_coord[1]) {
@@ -75,14 +94,12 @@ int main () {
           }
       }
 
-     //printf("%d \n", player_coord[0]);
-
       virtual_coord[0]++;
 
       printf("%c", matrix_arr[i]);
+    }
+   matrix_arr = '\0';
   }
-
-  getchar();
 
   return 0;
 }
