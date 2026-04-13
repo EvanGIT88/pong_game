@@ -5,21 +5,35 @@
 #include <conio.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <time.h>
-
-#define TIMEOUT 0   // seconds
 
 int main(void)
 {
-    clock_t tstart = clock();
-    int v1 = 'y';                   // default key press
-    while((clock() - tstart) / CLOCKS_PER_SEC < TIMEOUT) {
-        if(kbhit()) {
-            v1 = getch();
+    int key = 0;
+    while(1) {
+        if (kbhit()) {
+            key = getch();
+        }
+
+        switch (key)
+        {
+        case 35:
+            printf("# Pressed \n");
+            break;
+        case 72:
+            printf("Up arrow pressed \n");
+            break;
+        case 75:
+            printf("Left arrow pressed \n");
+            break;
+        case 77:
+            printf("Right arrow pressed \n");
+            break;
+        case 80:
+            printf("Down arrow pressed \n");
+            break;
+        default:
             break;
         }
+    key = 0;
     }
-    if(tolower(v1) == 'y')
-        printf("Example\n");
-    return 0;
 }
