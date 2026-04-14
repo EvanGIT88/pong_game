@@ -20,7 +20,8 @@ int main () {
   int* player_pad = create_arr_int(4); //(w, h, counter_w, counter_h)
   int* canvas_size = create_arr_int(2);   //(w, h)
   int* virtual_coord = create_arr_int(2); //(x, y)
-  int* input_key = create_arr_int(1);
+  int* input_key = create_arr_int(2); //(key, debouncing timeout -> in second btw)
+  clock_t* input_clock = malloc(2 * sizeof(clock_t)); // (start, current)
   bool* is_update = malloc(1 * sizeof(bool));
   char* matrix_arr;
 
@@ -45,6 +46,7 @@ int main () {
   virtual_coord[1] = 0;
 
   input_key[0] = 0;
+  input_key[1] = 0.7;
 
   *is_update = false;
 
@@ -54,9 +56,13 @@ int main () {
     return false;
   }
 
+  input_clock[0] = clock();
+
   for (;;) {
-    if(kbhit()) {
+    input_clock[1] = clock();
+    if(kbhit() && (double)(input_clock[1] - input_clock[0]) / CLOCKS_PER_SEC >= (double)input_key[1]) {
       input_key[0] = getch();
+      input_clock[0] = clock();
     }
 
     switch (input_key[0])
@@ -74,7 +80,6 @@ int main () {
         *is_update = true;
         break;
       case 77:
-        system("cls");
         player_coord[0]++;
         *is_update = true;
         break;
@@ -118,31 +123,13 @@ int main () {
       }
 
       printf("\n");
-
-      /*
-        player_coord[0] = 2;
-        player_coord[1] = 1;
-        player_coord[2] = player_coord[0];
-        player_coord[3] = player_coord[1];
-
-        player_pad[0] = 2;
-        player_pad[1] = 5;
-        player_pad[2] = 0;
-        player_pad[3] = 0;
-
-        canvas_size[0] = 64;
-        canvas_size[1] = 16;
-
-        virtual_coord[0] = 0;
-        virtual_coord[1] = 0;
-
-        input_key[0] = 0;
-      */
       
       printf("w: %d, h: %d \n", canvas_size[0], canvas_size[1]);
       printf("vx: %d, vy: %d \n", virtual_coord[0], virtual_coord[1]);
       printf("px: %d, py: %d \n", player_coord[0], player_coord[1]);
       printf("pcx: %d, pcy: %d \n", player_coord[2], player_coord[3]);
+      printf("ppw: %d, pph: %d \n", player_pad[0], player_pad[1]);
+      printf("ppwc: %d, pphc: %d \n", player_pad[2], player_pad[3]);
 
       //reset ever changing values to its default
       matrix_arr[0] = '\0';
