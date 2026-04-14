@@ -46,7 +46,7 @@ int main () {
   virtual_coord[1] = 0;
 
   input_key[0] = 0;
-  input_key[1] = 0.7;
+  input_key[1] = 0.1;
 
   *is_update = false;
 
@@ -95,6 +95,9 @@ int main () {
     
     if (*is_update == true) {
       system("cls");
+            player_coord[2] = player_coord[0];
+      player_coord[3] = player_coord[1];
+
       for (int i = 0; i < canvas_size[0] * canvas_size[1]; i++) {
         matrix_arr[i] = '@';
 
