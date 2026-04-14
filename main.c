@@ -105,7 +105,7 @@ int main () {
           printf("\n");
         }
 
-        if (virtual_coord[0] == player_coord[2] && virtual_coord[1] - 1  == player_coord[1]) {
+        if (virtual_coord[0] == player_coord[2] && virtual_coord[1] - 1  == player_coord[3]) {
             matrix_arr[i] = ' ';
             player_pad[2]++;
 
@@ -113,7 +113,7 @@ int main () {
               player_coord[2]++;
             } else if(player_pad[1] - 1 > player_pad[3]) {
               player_pad[3]++;
-              player_coord[1]++;
+              player_coord[3]++;
               player_coord[2] = player_coord[0];
             }
         }
