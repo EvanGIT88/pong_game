@@ -46,7 +46,7 @@ int main () {
   virtual_coord[1] = 0;
 
   input_key[0] = 0;
-  input_key[1] = 0.1;
+  input_key[1] = 0.5;
 
   *is_update = false;
 
@@ -92,10 +92,20 @@ int main () {
       default:
         break;
     }
+
+    if (player_coord[0] < 0 || player_coord[1] < 0) {
+       input_key[0] = 123;
+       continue;
+    }
+
+    if (player_coord[0] > canvas_size[0] - player_pad[0] || player_coord[1] > canvas_size[1] - player_pad[1]) {
+        input_key[0] = 123;
+       continue;
+    }
     
     if (*is_update == true) {
       system("cls");
-            player_coord[2] = player_coord[0];
+      player_coord[2] = player_coord[0];
       player_coord[3] = player_coord[1];
 
       for (int i = 0; i < canvas_size[0] * canvas_size[1]; i++) {
@@ -136,15 +146,14 @@ int main () {
 
       //reset ever changing values to its default
       matrix_arr[0] = '\0';
-      input_key[0] = 123;
       virtual_coord[0] = 0;
       virtual_coord[1] = 0;
       player_coord[2] = player_coord[0];
       player_coord[3] = player_coord[1];
       player_pad[2] = 0;
       player_pad[3] = 0;
+      input_key[0] = 123;
     }
-      
   }
 
   //free the reserved memory
