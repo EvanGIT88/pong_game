@@ -65,6 +65,7 @@ int main () {
       input_clock[0] = clock();
     }
 
+    /* */
     switch (input_key[0])
     {
       case 72:
