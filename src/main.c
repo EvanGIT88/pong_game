@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
-
+#include <windows.h>
   /*
     Display mechanism:
     1. Idenfity 1d array as 2d using h and w var (matrix)
@@ -45,7 +45,7 @@ int main () {
   virtual_coord[0] = 0;
   virtual_coord[1] = 0;
 
-  input_key[0] = 1;
+  input_key[0] = 12;
   input_key[1] = 0.2;
 
   *is_update = false;
@@ -59,35 +59,36 @@ int main () {
   input_clock[0] = clock();
 
   for (;;) {
-    input_clock[1] = clock();
-    if(kbhit() && (double)(input_clock[1] - input_clock[0]) / CLOCKS_PER_SEC >= (double)input_key[1]) {
-      input_key[0] = getch();
-      input_clock[0] = clock();
+
+    for (int key_code = 0; key_code < 256; key_code++) {
+      if (GetAsyncKeyState(key_code) & 0x8000) {
+          input_key[0] = key_code;
+      }
     }
 
     /* */
     switch (input_key[0])
     {
-      case 72:
+      case 38:
         player_coord[1]--;
         *is_update = true;
         break;
-      case 80:
+      case 40:
         player_coord[1]++;
         *is_update = true;
         break;
-      case 75:
+      case 37:
         player_coord[0]--;
         *is_update = true;
         break;
-      case 77:
+      case 39:
         player_coord[0]++;
         *is_update = true;
         break;
       case 0:
         *is_update = false;
         break;
-      case 1:
+      case 12:
         *is_update = true;
         break;
       default:
